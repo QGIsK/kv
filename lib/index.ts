@@ -3,7 +3,7 @@ import {isObject, isStringEmpty} from './helpers/utils';
 
 const {Schema, model, connect} = mongoose;
 
-interface kv {
+interface kv extends mongoose.Document {
     key: string;
     value: string;
 }
@@ -32,15 +32,15 @@ class KV {
         connect(this.uri);
     }
 
-    _createPrefix(key: string) {
+    _createPrefix(key: string): string {
         return `${this._clean(this.namespace)}:${this._clean(key)}`;
     }
 
-    _clean(value: string) {
+    _clean(value: string): string {
         return value.trim().split(' ').join('-');
     }
 
-    set(key: string, value: [String | Object]) {
+    set(key: string, value: [String | Object]): mongoose.Query<kv & {_id: any}, kv & {_id: any}, {}, kv> {
         const name = this._createPrefix(key);
 
         const parsedValue = isObject(value) ? JSON.stringify(value) : value;
@@ -65,7 +65,7 @@ class KV {
         }
     }
 
-    async all() {
+    async all(): Promise<{key: string; value: string}[]> {
         const doc = await KeyModel.find({key: {$regex: this.namespace, $options: 'i'}}).select('key value');
 
         // Removes id
@@ -74,14 +74,18 @@ class KV {
         });
     }
 
-    delete(key: string) {
+    async delete(key: string): Promise<void> {
         const name = this._createPrefix(key);
 
-        return KeyModel.deleteOne({key: name});
+        await KeyModel.deleteOne({key: name});
+
+        return;
     }
 
-    clear() {
-        return KeyModel.deleteMany({key: {$regex: this.namespace, $options: 'i'}});
+    async clear(): Promise<void> {
+        await KeyModel.deleteMany({key: {$regex: this.namespace, $options: 'i'}});
+
+        return;
     }
 }
 
