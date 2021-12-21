@@ -31,7 +31,11 @@ class KV {
     }
 
     _createPrefix(key: string) {
-        return `${this.namespace}:${key}`;
+        return `${this._clean(this.namespace)}:${this._clean(key)}`;
+    }
+
+    _clean(value: string) {
+        return value.trim().split(' ').join('-');
     }
 
     set(key: string, value: [String | Object]) {

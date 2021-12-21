@@ -8,7 +8,6 @@ import {isObject} from '../dist/helpers/utils';
 const namespace = 'creation';
 
 const key = 'key';
-const keySecondary = 'keySecondary';
 
 const value = 'value';
 const valueSecondary = 'valueSecondary';
@@ -24,6 +23,14 @@ test('create prefix returns correct prefix', async t => {
     const prefix = kv._createPrefix(key);
 
     t.is(prefix, `${namespace}:${key}`);
+});
+
+test('prefix replaces whitespace with dashes', async t => {
+    const kv = new KV(undefined, ' hello there ');
+
+    const prefix = kv._createPrefix(' hello there x2 ');
+
+    t.is(prefix, 'hello-there:hello-there-x2');
 });
 
 test('set value returns newly created value', async t => {
