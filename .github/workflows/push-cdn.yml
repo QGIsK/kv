@@ -1,0 +1,38 @@
+name: Upload to DO Spaces
+
+on:
+    workflow_dispatch:
+    release:
+        types: [created]
+jobs:
+    test:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - uses: actions/setup-node@v2
+              with:
+                  node-version: 14
+            - run: npm i -g pnpm
+            - run: pnpm i
+            - run: pnpm test
+
+    upload:
+        needs: test
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - uses: actions/setup-node@v2
+              with:
+                  node-version: 14
+            - run: npm i -g pnpm
+            - run: pnpm i
+            - run: pnpm run build
+            - uses: BetaHuhn/do-spaces-action@v2
+              with:
+                  access_key: ${{ secrets.ACCESS_KEY}}
+                  secret_key: ${{ secrets.SECRET_KEY }}
+                  space_name: ${{ secrets.SPACE_NAME }}
+                  space_region: ${{ secrets.SPACE_REGION }}
+                  source: dist
+                  out_dir: packages/steamresolver
+                  versioning: true

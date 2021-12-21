@@ -1,0 +1,71 @@
+{
+    "name": "lib-ts",
+    "version": "0.0.0",
+    "description": "Library Starter for TS",
+    "publishConfig": {
+        "access": "public"
+    },
+    "main": "./dist/index.js",
+    "module": "./dist/index.mjs",
+    "exports": {
+        "require": "./dist/index.js",
+        "import": "./dist/index.mjs"
+    },
+    "files": [
+        "dist"
+    ],
+    "scripts": {
+        "build-fast": "rm -rf dist && tsup lib/index.ts --format cjs,esm --target node14 --minify",
+        "build": "pnpm run build-fast -- --dts-resolve",
+        "prepublishOnly": "npm run build",
+        "test": "pnpm run build && pnpm run test-only",
+        "test-only": "ava test/*.test.ts --fail-fast --timeout 60s",
+        "lint": "eslint .",
+        "lint:fix": "eslint . --fix",
+        "prettier": "prettier --check **/*.ts **/*.md",
+        "prettier:fix": "prettier --write **/*.ts **/*.md",
+        "release": "standard-version",
+        "release:minor": "standard-version --release-as minor",
+        "release:patch": "standard-version --release-as patch",
+        "release:major": "standard-version --release-as major",
+        "prepare": "husky install"
+    },
+    "devDependencies": {
+        "@ava/typescript": "^3.0.1",
+        "@commitlint/cli": "^15.0.0",
+        "@commitlint/config-conventional": "^15.0.0",
+        "@qgisk/prettier-config": "^0.0.1",
+        "@typescript-eslint/parser": "^5.6.0",
+        "ava": "^3.15.0",
+        "eslint": "^7.0.0",
+        "eslint-config-google": "^0.14.0",
+        "eslint-config-prettier": "^8.1.0",
+        "eslint-plugin-prettier": "^3.1.1",
+        "eslint-plugin-security": "^1.4.0",
+        "husky": "^7.0.0",
+        "prettier": "^2.0.5",
+        "standard-version": "^9.3.2",
+        "sucrase": "^3.20.3",
+        "tsup": "^5.11.1",
+        "typescript": "^4.5.3"
+    },
+    "prettier": "@qgisk/prettier-config",
+    "ava": {
+        "extensions": [
+            "ts"
+        ],
+        "require": [
+            "sucrase/register"
+        ]
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/QGIsK/lib-ts.git"
+    },
+    "author": "Demian <QGIsK> (https://github.com/qgisk)",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/QGIsK/lib-ts/issues"
+    },
+    "homepage": "https://github.com/QGIsK/lib-ts#readme"
+}
