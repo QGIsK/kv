@@ -1,5 +1,5 @@
 {
-    "name": "kv",
+    "name": "@qgisk/kv",
     "version": "0.0.1",
     "description": "Library Starter for TS",
     "publishConfig": {
