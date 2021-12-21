@@ -34,16 +34,48 @@ class KV {
         return `${this.namespace}:${key}`;
     }
 
-    async set(key: string, value: [String | Object]) {
+    set(key: string, value: [String | Object]) {
         const name = this._createPrefix(key);
 
         const parsedValue = isObject(value) ? JSON.stringify(value) : value;
 
-        return await KeyModel.findOneAndUpdate(
+        return KeyModel.findOneAndUpdate(
             {key: name},
             {key: name, value: parsedValue},
             {new: true, upsert: true, setDefaultsOnInsert: true},
         );
+    }
+
+    async get(key: string): Promise<string | object | null> {
+        const name = this._createPrefix(key);
+        const doc = await KeyModel.findOne({key: name});
+
+        if (!doc) return doc;
+
+        try {
+            return JSON.parse(doc.value);
+        } catch (_err) {
+            return doc.value;
+        }
+    }
+
+    async all() {
+        const doc = await KeyModel.find({key: {$regex: this.namespace, $options: 'i'}}).select('key value');
+
+        // Removes id
+        return doc.map(doc => {
+            return {key: doc.key, value: doc.value};
+        });
+    }
+
+    delete(key: string) {
+        const name = this._createPrefix(key);
+
+        return KeyModel.deleteOne({key: name});
+    }
+
+    clear() {
+        return KeyModel.deleteMany({key: {$regex: this.namespace, $options: 'i'}});
     }
 }
 

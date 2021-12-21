@@ -3,13 +3,20 @@
 import test from 'ava';
 import {KV} from '../dist/';
 
-const namespace = 'users';
+import {isObject} from '../dist/helpers/utils';
+
+const namespace = 'creation';
 
 const key = 'key';
 const keySecondary = 'keySecondary';
 
 const value = 'value';
 const valueSecondary = 'valueSecondary';
+
+const keyObject = 'keyObject';
+const valueObject = {
+    foo: 'bar',
+};
 
 test('create prefix returns correct prefix', async t => {
     const kv = new KV(undefined, namespace);
@@ -20,7 +27,7 @@ test('create prefix returns correct prefix', async t => {
 });
 
 test('set value returns newly created value', async t => {
-    const kv = new KV();
+    const kv = new KV(undefined, namespace);
     const keyv = await kv.set(key, value);
 
     t.true(keyv.key.includes(key));
@@ -28,7 +35,7 @@ test('set value returns newly created value', async t => {
 });
 
 test('set value updates value that already exists', async t => {
-    const kv = new KV();
+    const kv = new KV(undefined, 'duplication');
     const keyv = await kv.set(key, value);
 
     t.true(keyv.key.includes(key));
@@ -38,4 +45,73 @@ test('set value updates value that already exists', async t => {
 
     t.true(updatedKeyv.key.includes(key));
     t.is(updatedKeyv.value, valueSecondary);
+});
+
+test('get returns correct value', async t => {
+    const kv = new KV(undefined, namespace);
+
+    const keyv = await kv.get(key);
+
+    t.is(keyv, value);
+});
+
+test('get returns object', async t => {
+    const kv = new KV(undefined, 'object');
+
+    await kv.set(keyObject, valueObject);
+
+    const keyv = await kv.get(keyObject);
+
+    t.assert(isObject(keyv));
+    t.assert('foo' in valueObject);
+    t.is(valueObject.foo, 'bar');
+});
+
+test('delete value', async t => {
+    const kv = new KV(undefined, 'deletion');
+
+    await kv.set(key, value);
+
+    await kv.delete(key);
+
+    const delItem = await kv.get(key);
+
+    t.is(delItem, null);
+});
+
+test('clear namespace', async t => {
+    const kv = new KV(undefined, 'clear');
+
+    await Promise.all([
+        kv.set('dada', 'dadadad'),
+        kv.set('dddd', 'rgr'),
+        kv.set('f6rtvgb', 'rftygvubhinjo'),
+        kv.set('gy8tbinj', 'dar3fg'),
+        kv.set('8iuybndaw', 'dadaqw'),
+        kv.set('dawda', 'yg7bndwma'),
+    ]);
+
+    await kv.clear();
+
+    const all = await kv.all();
+
+    t.assert(all.length === 0);
+});
+
+test('returns all in namespace', async t => {
+    const kv = new KV(undefined, 'many');
+    const values = [
+        kv.set('dada', 'dadadad'),
+        kv.set('dddd', 'rgr'),
+        kv.set('f6rtvgb', 'rftygvubhinjo'),
+        kv.set('gy8tbinj', 'dar3fg'),
+        kv.set('8iuybndaw', 'dadaqw'),
+        kv.set('dawda', 'yg7bndwma'),
+    ];
+
+    await Promise.all(values);
+
+    const all = await kv.all();
+
+    t.assert(all.length === values.length);
 });

@@ -15,7 +15,7 @@
         "dist"
     ],
     "scripts": {
-        "build-fast": "rm -rf dist && tsup lib/index.ts --format cjs,esm --target node14 --minify",
+        "build-fast": "rm -rf dist && tsup lib/index.ts lib/helpers --format cjs,esm --target node14 --minify",
         "build": "pnpm run build-fast -- --dts-resolve",
         "prepublishOnly": "npm run build",
         "test": "pnpm run build && pnpm run test-only",
