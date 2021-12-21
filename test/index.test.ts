@@ -57,6 +57,8 @@ test('set value updates value that already exists', async t => {
 test('get returns correct value', async t => {
     const kv = new KV(undefined, namespace);
 
+    await kv.set(key, value);
+
     const keyv = await kv.get(key);
 
     t.is(keyv, value);
