@@ -1,5 +1,5 @@
 {
-    "name": "lib-ts",
+    "name": "kv",
     "version": "0.0.0",
     "description": "Library Starter for TS",
     "publishConfig": {
@@ -60,12 +60,15 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/QGIsK/lib-ts.git"
+        "url": "git+https://github.com/QGIsK/kv.git"
     },
     "author": "Demian <QGIsK> (https://github.com/qgisk)",
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/QGIsK/lib-ts/issues"
+        "url": "https://github.com/QGIsK/kv/issues"
     },
-    "homepage": "https://github.com/QGIsK/lib-ts#readme"
+    "homepage": "https://github.com/QGIsK/kv#readme",
+    "dependencies": {
+        "mongoose": "^6.1.2"
+    }
 }
