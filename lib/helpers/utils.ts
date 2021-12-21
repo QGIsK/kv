@@ -15,9 +15,8 @@ const isArray = (arr: any): boolean => {
 /**
  * Internal helper to check if string is empty
  */
-const isStringEmpty = (str: string): boolean => {
-    if (!isString(str)) return false;
-    return str.length === 0;
+const isStringEmpty = (str: any): boolean => {
+    return !isString(str) || !str || str.trim().length === 0;
 };
 
 /**
@@ -50,12 +49,4 @@ const doesInclude = (string: string, includes: string): boolean => {
     return String(string).includes(includes);
 };
 
-export default {
-    isString,
-    isStringEmpty,
-    isDate,
-    isObject,
-    isNumber,
-    isArray,
-    doesInclude,
-};
+export {isString, isStringEmpty, isDate, isObject, isNumber, isArray, doesInclude};
