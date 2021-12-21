@@ -1,5 +1,7 @@
-import {Schema, model, connect} from 'mongoose';
+import mongoose from 'mongoose';
 import {isObject, isStringEmpty} from './helpers/utils';
+
+const {Schema, model, connect} = mongoose;
 
 interface kv {
     key: string;
