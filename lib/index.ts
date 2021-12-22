@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import EventEmitter from 'events';
 import {isObject, isStringEmpty} from './helpers/utils';
 
 const {Schema, model, connect} = mongoose;
@@ -21,15 +22,19 @@ const kvSchema = new Schema<kv>({
 
 const KeyModel = model<kv>('KV', kvSchema);
 
-class KV {
+class KV extends EventEmitter {
     uri: string;
     namespace: string;
+    // TODO :: Define
+    db: any;
 
     constructor(uri: string, namespace: string) {
+        super();
+
         this.uri = isStringEmpty(uri) ? 'mongodb://localhost:27017/kv' : uri;
         this.namespace = isStringEmpty(namespace) ? 'kv' : namespace;
 
-        connect(this.uri);
+        connect(this.uri).catch(err => this.emit('error', err));
     }
 
     _createPrefix(key: string): string {
