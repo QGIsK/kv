@@ -1,12 +1,13 @@
 import mongoose from 'mongoose';
 import EventEmitter from 'events';
-import {isObject, isStringEmpty} from './helpers/utils';
+import {isObject, isNumber, isStringEmpty, isDate} from './helpers/utils';
 
 const {Schema, model, connect} = mongoose;
 
 interface kv extends mongoose.Document {
     key: string;
     value: string;
+    expiresAt: [Date | null];
 }
 
 const kvSchema = new Schema<kv>({
@@ -17,6 +18,10 @@ const kvSchema = new Schema<kv>({
     value: {
         type: String,
         required: true,
+    },
+    expiresAt: {
+        type: Date,
+        required: false,
     },
 });
 
@@ -43,23 +48,32 @@ class KV extends EventEmitter {
         return value.trim().split(' ').join('-');
     }
 
-    set(key: string, value: [String | Object]): mongoose.Query<kv & {_id: any}, kv & {_id: any}, {}, kv> {
+    set(key: string, value: [String | Object], TTL: number): mongoose.Query<kv & {_id: any}, kv & {_id: any}, {}, kv> {
         const name = this._createPrefix(key);
 
         const parsedValue = isObject(value) ? JSON.stringify(value) : value;
 
+        const ttl = isNumber(TTL) ? new Date(Date.now() + TTL) : null;
+
         return KeyModel.findOneAndUpdate(
             {key: name},
-            {key: name, value: parsedValue},
+            {key: name, value: parsedValue, expiresAt: ttl},
             {new: true, upsert: true, setDefaultsOnInsert: true},
         );
     }
 
-    async get(key: string): Promise<string | object | null> {
+    async get(key: string): Promise<string | object | undefined> {
+        if (isStringEmpty(key)) return undefined;
         const name = this._createPrefix(key);
         const doc = await KeyModel.findOne({key: name});
 
-        if (!doc) return doc;
+        if (!doc) return undefined;
+
+        // @ts-ignore ignore expiresAt can be type null
+        if (isDate(doc.expiresAt) && Date.now() > doc.expiresAt) {
+            await this.delete(key);
+            return undefined;
+        }
 
         try {
             return JSON.parse(doc.value);
@@ -78,6 +92,8 @@ class KV extends EventEmitter {
     }
 
     async delete(key: string): Promise<void> {
+        if (isStringEmpty(key)) return;
+
         const name = this._createPrefix(key);
 
         await KeyModel.deleteOne({key: name});

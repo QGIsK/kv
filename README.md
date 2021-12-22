@@ -71,7 +71,7 @@ const users = new KV(undefined, 'users');
 
 await users.del('one', 'user');
 
-await users.get('one'); // null
+await users.get('one'); // undefined
 ```
 
 ## Clear a namespace
@@ -84,21 +84,24 @@ const users = new KV(undefined, 'users');
 await users.set('one', 'user');
 await users.clear();
 
-await users.get('one'); // null
+await users.get('one'); // undefined
 ```
 
 ## Mongoose error events
 
 ```javascript
-import {KV} from '@qgisk/kv';
-
 const kv = new KV('mongodb://123/');
 
 kv.on('error', e => console.log(e));
 ```
 
-## Coming soon / todo
+## TTL
 
--   TTL so it can be used as a cache
+```javascript
+const kv = new KV(undefined, 'ttl');
+
+await kv.set('test', 'hi', 5000); // 5 seconds
+setTimeout(() => console.log(await kv.get('test')), 5000); // undefined
+```
 
 [MIT](https://github.com/QGIsK/kv/blob/main/LICENSE) Demian

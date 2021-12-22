@@ -85,7 +85,7 @@ test('delete value', async t => {
 
     const delItem = await kv.get(key);
 
-    t.is(delItem, null);
+    t.is(delItem, undefined);
 });
 
 test('clear namespace', async t => {
@@ -124,3 +124,5 @@ test('returns all in namespace', async t => {
 
     t.assert(all.length === values.length);
 });
+
+// TODO :: Write tests for ttl
