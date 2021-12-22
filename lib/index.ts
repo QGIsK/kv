@@ -25,8 +25,6 @@ const KeyModel = model<kv>('KV', kvSchema);
 class KV extends EventEmitter {
     uri: string;
     namespace: string;
-    // TODO :: Define
-    db: any;
 
     constructor(uri: string, namespace: string) {
         super();
