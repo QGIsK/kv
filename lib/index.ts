@@ -3,7 +3,6 @@ import EventEmitter from 'events';
 import {isObject, isNumber, isStringEmpty, isDate} from './helpers/utils';
 
 const {Schema, model, connect} = mongoose;
-
 interface kv extends mongoose.Document {
     key: string;
     value: string;
@@ -26,7 +25,6 @@ const kvSchema = new Schema<kv>({
 });
 
 const KeyModel = model<kv>('KV', kvSchema);
-
 class KV extends EventEmitter {
     uri: string;
     namespace: string;
@@ -48,12 +46,12 @@ class KV extends EventEmitter {
         return value.trim().split(' ').join('-');
     }
 
-    set(key: string, value: [String | Object], TTL: number): mongoose.Query<kv & {_id: any}, kv & {_id: any}, {}, kv> {
+    set(key: string, value: [String | Object], TTL?: number): mongoose.Query<kv & {_id: any}, kv & {_id: any}, {}, kv> {
         const name = this._createPrefix(key);
 
         const parsedValue = isObject(value) ? JSON.stringify(value) : value;
 
-        const ttl = isNumber(TTL) ? new Date(Date.now() + TTL) : null;
+        const ttl = TTL && isNumber(TTL) ? new Date(Date.now() + TTL) : null;
 
         return KeyModel.findOneAndUpdate(
             {key: name},
