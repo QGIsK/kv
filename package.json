@@ -5,6 +5,7 @@
     "publishConfig": {
         "access": "public"
     },
+    "bin": "./dist/kv.mjs",
     "main": "./dist/index.js",
     "module": "./dist/index.mjs",
     "exports": {
@@ -15,7 +16,7 @@
         "dist"
     ],
     "scripts": {
-        "build-fast": "rm -rf dist && tsup lib/index.ts lib/helpers --format cjs,esm --target node14 --minify",
+        "build-fast": "rm -rf dist && tsup lib/ lib/helpers --format cjs,esm --target node14 --minify",
         "build": "pnpm run build-fast -- --dts-resolve",
         "prepublishOnly": "npm run build",
         "test": "pnpm run build && pnpm run test-only",
@@ -69,6 +70,8 @@
     },
     "homepage": "https://github.com/QGIsK/kv#readme",
     "dependencies": {
+        "cac": "^6.7.12",
+        "configstore": "^6.0.0",
         "mongoose": "^6.1.2"
     }
 }

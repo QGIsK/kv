@@ -9,6 +9,8 @@ KV is a simple MongoDB based key value store.
 
 If you're looking for a key value library that supports more than just MongoDB checkout [keyv](https://github.com/jaredwray/keyv)
 
+Includes a cli
+
 ## Installation
 
 ```bash
@@ -102,6 +104,59 @@ const kv = new KV(undefined, 'ttl');
 
 await kv.set('test', 'hi', 5000); // 5 seconds
 setTimeout(() => console.log(await kv.get('test')), 5000); // undefined
+```
+
+# KV Cli
+
+KV has a simple cli for most commands (everything but all)
+
+## Help
+
+```bash
+kv --help
+```
+
+## Settings
+
+Default settings
+
+```json
+{
+    "db": {
+        "uri": "mongodb://localhost:27017/kv"
+    },
+    "namespace": "kv"
+}
+```
+
+### Updating settings
+
+```bash
+kv settings --uri <your uri: string> --namespace <namespace: string>
+```
+
+## Setting a value
+
+```
+kv set [key] [value] [ttl?] --namespace <optional>
+```
+
+## Getting a value
+
+```
+kv get [key] --namespace <optional>
+```
+
+## Deleting a value
+
+```
+kv delete [key] --namespace <optional>
+```
+
+## Clearing a namespace
+
+```
+kv clear --namespace <optional>
 ```
 
 [MIT](https://github.com/QGIsK/kv/blob/main/LICENSE) Demian
