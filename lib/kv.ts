@@ -26,22 +26,25 @@ cli.command('settings', 'Set your mongodb configuration')
         endCommand('Settings updated');
     });
 
-cli.command('set [key] [value] [TTL]', 'set a key value')
+cli.command('set [key] [...value]', 'set a key value')
+    .option('--ttl [string]', 'Set a TTL [Optional]')
     .option('--namespace [string]', 'Overwrite default namespace')
-    .action(async (key, value, TTL, flags) => {
-        if (isStringEmpty(key) || isStringEmpty(value)) {
+    .action(async (key, value, flags) => {
+        if (isStringEmpty(key) || value.length === 0) {
             return console.log('> Supply a key and a value.');
         }
 
-        const ttl = TTL && isNumber(TTL) ? TTL : null;
+        const parsedValue = value.join(' ');
+
+        const ttl = flags.ttl && isNumber(flags.ttl) ? flags.ttl : null;
 
         const namespace = getNamespace(flags.namespace);
 
         const kv = new KV(config.get('db.uri'), namespace);
 
-        await kv.set(key, value, ttl);
+        await kv.set(key, parsedValue, ttl);
 
-        endCommand(`${key} added with value ${value}`);
+        endCommand(`${key} added with value ${parsedValue}`);
     });
 
 cli.command('get [key]', 'get a value')

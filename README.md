@@ -137,8 +137,10 @@ kv settings --uri <your uri: string> --namespace <namespace: string>
 
 ## Setting a value
 
+Supports multi word values
+
 ```
-kv set [key] [value] [ttl?] --namespace <optional>
+kv set [key] [value] --namespace <optional> --ttl [number (in ms)] <optional>
 ```
 
 ## Getting a value
