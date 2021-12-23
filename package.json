@@ -1,6 +1,6 @@
 {
     "name": "@qgisk/kv",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "description": "Library Starter for TS",
     "publishConfig": {
         "access": "public"
