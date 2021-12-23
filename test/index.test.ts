@@ -25,6 +25,14 @@ test('create prefix returns correct prefix', async t => {
     t.is(prefix, `${namespace}:${key}`);
 });
 
+test('clean replaces whitespace with dashes and trims off whitespace start/end', t => {
+    const kv = new KV(undefined, undefined);
+
+    const cleaned = kv._clean(' hello there ');
+
+    t.is(cleaned, 'hello-there');
+});
+
 test('prefix replaces whitespace with dashes', async t => {
     const kv = new KV(undefined, ' hello there ');
 
@@ -124,5 +132,4 @@ test('returns all in namespace', async t => {
 
     t.assert(all.length === values.length);
 });
-
-// TODO :: Write tests for ttl
+    
