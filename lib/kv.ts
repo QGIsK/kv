@@ -19,6 +19,7 @@ const cli = cac('kv');
 cli.command('settings', 'Set your mongodb configuration')
     .option('--uri <string>', 'MongoDB connect uri (default localhost/kv')
     .option('--namespace <string>', 'set a default namespace (default: kv')
+    .example('kv settings --uri mongodb://localhost:27017/kv --namespace test')
     .action(async flags => {
         if (flags.uri) config.set('db.uri', flags.uri);
         if (flags.namespace) config.set('namespace', flags.namespace);
@@ -28,7 +29,8 @@ cli.command('settings', 'Set your mongodb configuration')
 
 cli.command('set [key] [...value]', 'set a key value')
     .option('--ttl [string]', 'Set a TTL [Optional]')
-    .option('--namespace [string]', 'Overwrite default namespace')
+    .option('--namespace [string]', 'Overwrite default namespace ( This does not overwrite your global settings')
+    .example('kv set location The Netherlands --namespace testing --ttl 300')
     .action(async (key, value, flags) => {
         if (isStringEmpty(key) || value.length === 0) {
             return console.log('> Supply a key and a value.');
@@ -48,7 +50,8 @@ cli.command('set [key] [...value]', 'set a key value')
     });
 
 cli.command('get [key]', 'get a value')
-    .option('--namespace [string]', 'Overwrite default namespace')
+    .option('--namespace [string]', 'Overwrite default namespace ( This does not overwrite your global settings')
+    .example('kv get location --namespace testing')
     .action(async (key, flags) => {
         if (isStringEmpty(key)) {
             return console.log('> Supply a key.');
@@ -65,7 +68,8 @@ cli.command('get [key]', 'get a value')
     });
 
 cli.command('delete', 'delete a key')
-    .option('--namespace [string]', 'Overwrite default namespace')
+    .option('--namespace [string]', 'Overwrite default namespace ( This does not overwrite your global settings')
+    .example('kv delete location --namespace testing')
     .action(async (key, flags) => {
         const namespace = getNamespace(flags.namespace);
         const kv = new KV(config.get('db.uri'), namespace);
@@ -76,7 +80,8 @@ cli.command('delete', 'delete a key')
     });
 
 cli.command('clear', 'clear a namespace')
-    .option('--namespace [string]', 'Overwrite default namespace')
+    .option('--namespace [string]', 'Overwrite default namespace ( This does not overwrite your global settings')
+    .example('kv delete --namespace testing')
     .action(async flags => {
         const namespace = getNamespace(flags.namespace);
         const kv = new KV(config.get('db.uri'), namespace);

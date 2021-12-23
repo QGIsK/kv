@@ -116,6 +116,12 @@ KV has a simple cli for most commands (everything but all)
 kv --help
 ```
 
+### For specific commands
+
+```bash
+kv get -h # or --help
+```
+
 ## Settings
 
 Default settings
@@ -160,5 +166,9 @@ kv delete [key] --namespace <optional>
 ```
 kv clear --namespace <optional>
 ```
+
+## Coming soon / To do
+
+-   Tests for the cli
 
 [MIT](https://github.com/QGIsK/kv/blob/main/LICENSE) Demian
