@@ -1,8 +1,9 @@
-// @ts-ignore Mongoose ;(
-import {Schema, model, connect, Document, Query} from 'mongoose';
+import mongoose from 'mongoose';
 import EventEmitter from 'events';
 import {isObject, isNumber, isStringEmpty, isDate} from './helpers/utils';
-interface kv extends Document {
+
+const {Schema, model, connect} = mongoose;
+interface kv extends mongoose.Document {
     key: string;
     value: string;
     expiresAt: [Date | null];
@@ -45,7 +46,7 @@ class KV extends EventEmitter {
         return value.trim().split(' ').join('-');
     }
 
-    set(key: string, value: [String | Object], TTL?: number): Query<kv & {_id: any}, kv & {_id: any}, {}, kv> {
+    set(key: string, value: [String | Object], TTL?: number): mongoose.Query<kv & {_id: any}, kv & {_id: any}, {}, kv> {
         const name = this._createPrefix(key);
 
         const parsedValue = isObject(value) ? JSON.stringify(value) : value;
