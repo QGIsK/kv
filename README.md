@@ -14,7 +14,7 @@ If you're looking for a CLI checkout [this](https://github.com/qgisk/kv-cli)
 ## Installation
 
 ```bash
-npm i @qgisk/kv
+npm i @qgisk/kv mongoose
 ```
 
 ## Example
