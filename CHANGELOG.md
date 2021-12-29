@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.9](https://github.com/QGIsK/steamResolver/compare/v0.0.8...v0.0.9) (2021-12-29)
+
+
+### Other
+
+* add keywords ([f2d2195](https://github.com/QGIsK/steamResolver/commits/f2d2195e0113e66b2ef8063d77b9850dfbbb8efd))
+
 ### [0.0.8](https://github.com/QGIsK/steamResolver/compare/v0.0.7...v0.0.8) (2021-12-29)
 
 
