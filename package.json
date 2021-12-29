@@ -5,6 +5,11 @@
     "publishConfig": {
         "access": "public"
     },
+    "keywords": [
+        "kv",
+        "key value",
+        "mongodb"
+    ],
     "main": "./dist/index.js",
     "module": "./dist/index.mjs",
     "exports": {
