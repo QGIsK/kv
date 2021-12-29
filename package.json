@@ -1,11 +1,10 @@
 {
     "name": "@qgisk/kv",
     "version": "0.0.6",
-    "description": "Library Starter for TS",
+    "description": "Simple KV implementation for MongoDB",
     "publishConfig": {
         "access": "public"
     },
-    "bin": "./dist/kv.mjs",
     "main": "./dist/index.js",
     "module": "./dist/index.mjs",
     "exports": {
@@ -70,10 +69,6 @@
         "url": "https://github.com/QGIsK/kv/issues"
     },
     "homepage": "https://github.com/QGIsK/kv#readme",
-    "dependencies": {
-        "cac": "^6.7.12",
-        "configstore": "^6.0.0"
-    },
     "peerDependencies": {
         "mongoose": "^6.1.3"
     }
