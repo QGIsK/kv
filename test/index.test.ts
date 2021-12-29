@@ -132,4 +132,3 @@ test('returns all in namespace', async t => {
 
     t.assert(all.length === values.length);
 });
-    

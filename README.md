@@ -111,6 +111,7 @@ setTimeout(() => console.log(await kv.get('test')), 5000); // undefined
 KV has a simple cli for most commands (everything but all)
 
 ## Installation
+
 ```bash
 npm i -g @qgisk/kv
 ```
