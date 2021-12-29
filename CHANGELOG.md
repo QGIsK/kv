@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.8](https://github.com/QGIsK/steamResolver/compare/v0.0.7...v0.0.8) (2021-12-29)
+
+
+### Other
+
+* fix mongoose doesn't support named exports ([5a2b1c9](https://github.com/QGIsK/steamResolver/commits/5a2b1c911392bb5fde2f176ff701845ae5382d86))
+* update dependencies ([b4564ec](https://github.com/QGIsK/steamResolver/commits/b4564ecee8c7a82b9b094a95401bd14727171ed0))
+
 ### [0.0.7](https://github.com/QGIsK/steamResolver/compare/v0.0.6...v0.0.7) (2021-12-29)
 
 
